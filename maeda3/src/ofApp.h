@@ -38,6 +38,8 @@ class ofApp : public ofBaseApp{
     
     float fontSize;
     
+    float scalar;
+    
     ofTrueTypeFont myFont;
     string myText;
     

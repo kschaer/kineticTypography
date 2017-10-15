@@ -3,8 +3,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     textCenters.set(0,0);
-    width = 512;
-    height = 1024;
+    width = ofGetWidth();
+    height = ofGetHeight();
     textBoundings.set(0,0,width,height);
     textReps = 1;
     yPos = 100;
@@ -15,14 +15,18 @@ void ofApp::setup(){
     ofFill();
     pageCenter= 0;
     
-    fontSize = 20;
+    fontSize = 100;
     myFont.load("Avenir.ttc",fontSize,true,true,true);
-    myText = "hello";
+    myText = "hi there ";
     //ofSetFrameRate(2);
 
     textBounding.set(myFont.getStringBoundingBox(myText, 0, 0));
 
     textCenter.set(textBounding.width/2,textBounding.height/2);
+    
+    scalar = 0;
+    
+    ofEnableAntiAliasing();
 }
 
 //--------------------------------------------------------------
@@ -62,9 +66,19 @@ void ofApp::draw(){
             fontSize = 100/(tempI+2);
             ofSetColor(255);
             //ofDrawCircle(centerPoints,fontSize);
-            ofSetColor(220,200,10,255-10*textReps);
+            scalar = 127+127*sin(ofGetElapsedTimef());
+
+            ofSetColor(220,scalar,255-scalar);
             //ofTranslate(mouseX,mouseY);
-            myFont.drawString(myText, xPos - textCenter.x, yPos + textCenter.x);
+            ofPushMatrix();
+            
+            ofTranslate(xPos  +.01*mouseX/(tempI+1), yPos  + .01*mouseX/(tempI+1));
+            
+            ofScale(.005*scalar/(tempI+1),.005*scalar/(tempI+1));
+
+//            myFont.drawString(myText, xPos - textCenter.x, yPos + textCenter.x);
+            myFont.drawString(myText, - textCenter.x,  textCenter.y);
+            ofPopMatrix();
             
         }
         
