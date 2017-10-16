@@ -29,6 +29,8 @@ class ofApp : public ofBaseApp{
     
     
     ofPoint centerPoints;
+    ofPoint alignmentPoints;
+    
     float yPos;
     float xPos;
     
