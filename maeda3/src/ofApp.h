@@ -49,4 +49,6 @@ class ofApp : public ofBaseApp{
     //ofVec2f centerer;
     ofRectangle textBounding;
     
+    
+    ofEasyCam cam;
 };

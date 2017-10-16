@@ -17,7 +17,7 @@ void ofApp::setup(){
     
     fontSize = 120;
     myFont.load("Avenir.ttc",fontSize,true,true,true);
-    myText = "bullshit";
+    myText = "you are here";
     //ofSetFrameRate(2);
     
     textBounding.set(myFont.getStringBoundingBox(myText, 0, 0));
@@ -39,6 +39,15 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    
+    cam.begin();
+    
+    
+    
+    ofPushMatrix();
+    //ofTranslate(mouseX,mouseY);
+    ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
+
     yPos = -50;
     
     ofBackground(0, 0, 0);
@@ -62,9 +71,19 @@ void ofApp::draw(){
             
             
             ofSetColor(240);
-
+            
+            
+            ofRotateY(360*cos(.02*ofGetElapsedTimef()-j*i));
             ofPushMatrix();
             ofTranslate(xPos-1/(tempI+1), yPos+1/(tempI+1));
+            
+            
+            //ofRotateX(180*sin(ofGetElapsedTimef()-i));
+            ofRotateY(360*cos(.2*ofGetElapsedTimef()-j*i));
+            ofRotateZ(180*sin(.1*ofGetElapsedTimef()-j));
+            //ofRotateX(-90);
+            
+            
             ofScale(1/(tempI+1),1/(tempI+1));
             //            myFont.drawString(myText, xPos - textCenter.x, yPos + textCenter.x);
             myFont.drawString(myText, - textCenter.x ,  textCenter.y );
@@ -76,6 +95,8 @@ void ofApp::draw(){
         }
         
     }
+    //ofPopMatrix();
+    cam.end();
     
 }
 
