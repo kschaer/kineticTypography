@@ -33,7 +33,7 @@ class ofApp : public ofBaseApp{
     ofPath outline;
     
     vector <vector <ofVec2f> > points; //*******
-
+    string myString;
     
     ofEasyCam cam;
     
