@@ -9,7 +9,7 @@ void ofApp::setup(){
     
     frameCount = 0;
 
-    myText = "hi!";
+    myText = ";D";
     myFont.load("Arial Rounded Bold.ttf",450,true,true,true);
     //myFont.loadFont("Skia.ttf", 100);
     textBounding.set(10,10,10,10);

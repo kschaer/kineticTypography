@@ -28,7 +28,11 @@ class ofApp : public ofBaseApp{
     ofTrueTypeFont myFont;
     ofPoint centerText;
     ofRectangle textBounding;
-    vector <vector <ofVec2f> > points;
+    
+    
+    vector <vector <ofVec2f> > points; //*******
+    
+    
     ofPath outline;
     
     float nextPointSpeed;

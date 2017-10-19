@@ -15,9 +15,9 @@ void ofApp::setup(){
     ofFill();
     pageCenter= 0;
     
-    fontSize = 120;
+    fontSize = 250;
     myFont.load("Avenir.ttc",fontSize,true,true,true);
-    myText = "you are here";
+    myText = "o";
     //ofSetFrameRate(2);
     
     textBounding.set(myFont.getStringBoundingBox(myText, 0, 0));
@@ -40,13 +40,13 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    cam.begin();
+    //cam.begin();
     
     
     
     ofPushMatrix();
     //ofTranslate(mouseX,mouseY);
-    ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
+    //ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
 
     yPos = -50;
     
@@ -73,20 +73,27 @@ void ofApp::draw(){
             ofSetColor(240);
             
             
-            ofRotateY(360*cos(.02*ofGetElapsedTimef()-j*i));
+            //ofRotateY(360*cos(.02*ofGetElapsedTimef()-j*i));
             ofPushMatrix();
-            ofTranslate(xPos-1/(tempI+1), yPos+1/(tempI+1));
+            //ofTranslate(xPos-1/(tempI+1), yPos+1/(tempI+1));
+            ofTranslate(xPos,yPos);
             
             
             //ofRotateX(180*sin(ofGetElapsedTimef()-i));
-            ofRotateY(360*cos(.2*ofGetElapsedTimef()-j*i));
-            ofRotateZ(180*sin(.1*ofGetElapsedTimef()-j));
+            //ofRotateY(360*cos(.2*ofGetElapsedTimef()-j*i));
+            //ofRotateZ(180*sin(.1*ofGetElapsedTimef()-j));
             //ofRotateX(-90);
             
             
             ofScale(1/(tempI+1),1/(tempI+1));
             //            myFont.drawString(myText, xPos - textCenter.x, yPos + textCenter.x);
-            myFont.drawString(myText, - textCenter.x ,  textCenter.y );
+            // this one myFont.drawString(myText, - textCenter.x ,  textCenter.y );
+            
+            ofNoFill();
+            //ofTranslate(xPos*(1/(tempI+1)),yPos);
+            ofDrawRectangle(textBounding);
+            //myFont.drawStringAsShapes(myText, -textCenter.x, textCenter.y);
+            myFont.drawStringAsShapes(myText, 0,0);
             //myFont.drawString(myText, - textCenter.x,  textCenter.y);
             
             //            myFont.drawString(myText, xPos - textCenter.x, yPos + textCenter.x)
@@ -96,7 +103,7 @@ void ofApp::draw(){
         
     }
     //ofPopMatrix();
-    cam.end();
+    //cam.end();
     
 }
 
