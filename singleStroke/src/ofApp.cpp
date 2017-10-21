@@ -58,7 +58,7 @@ void ofApp::draw(){
             float tempI = i;
             float tempJ = j;
             ofPoint wigglingPoint;
-            cout << points.size() << endl;
+//            cout << points.size() << endl;
             //ofSetColor(255-ofMap(i,0,points.size(),0,255), ofMap(i,0,points.size(),0,255), ofMap(i,0,points.size(),0,255));
             
             ofSetColor(255-ofMap(i,0,points.size(),200,255), ofMap(sin(ofGetElapsedTimef()-.6*i),-1,1,100,200), ofMap(i,0,points.size(),40,80));
@@ -68,6 +68,7 @@ void ofApp::draw(){
             wiggleZ.set(0,0,15*cos(ofGetElapsedTimef()-.05*j)+80*sin(.3*ofGetElapsedTimef()-.3*i));
             ofPoint newPoint = wordPoints[j]+wigglingPoint;
             ofPushMatrix();
+            {
                 ofTranslate(newPoint);
                 //ofRotateY(360*sin(ofGetElapsedTimef()-j));
 
@@ -76,6 +77,7 @@ void ofApp::draw(){
                 ofPoint basePoint;
         
                 basePoint.set(width/i, height/2, 0);
+            }
             ofPopMatrix();
             
             //ofDrawLine(newPoint, basePoint);

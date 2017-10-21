@@ -2,32 +2,33 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    ofBackground(20);
+    ofSetColor(80);
     
-    int circleResolution = 6;
-    circlePolyline.arc(0,0,0,1,1,0,360,circleResolution);
-    circlePoints.resize(circlePolyline.size());
-    path.setFilled(false);
+    mappedMouse = 0;
     
-    for (int i=0; i< 20; i++)
-    {
-        for (int j=0; j< 20; j++)
-        {
-            drawCircle(i*40, j*40, 0, 20);
+    myString = "disco";
+    
+    width = ofGetWidth();
+    height = ofGetHeight();
+    
+    time = ofGetElapsedTimef();
+    sinTime = sin(time);
+    cosTime = cos(time);
+    
+    fontScale = 11;
+    myFontPath = myFont.getPath(myString, fontScale);
+    
+    vector <ofPolyline> polylines = myFontPath.getOutline();
+    for (int i = 0; i < polylines.size(); i++){
+        vector <ofVec2f> linePoints;
+        ofPolyline reSpacedPolyline = polylines[i].getResampledBySpacing(2);
+        for (int j = 0; j<reSpacedPolyline.size(); j++){
+            linePoints.push_back(reSpacedPolyline[j]);
         }
-        
+        points.push_back(linePoints);
     }
-    
-    for (int i=0; i<path.getCommands().size(); i++)
-    {
-        vector<ofPath::Command>& pathCommands = path.getCommands();
-        for (int j=0; j<pathCommands.size(); j++)
-        {
-            commands.push_back(pathCommands[j]);
-        }
-        
-    }
-    
-    commandIndex =0;
+
     
 
 
@@ -36,98 +37,71 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 
-    ofSetWindowTitle(ofToString(ofGetFrameRate()));
-    if (ofGetFrameNum()%10 == 0)
-    {
-        if (commandIndex+1<commands.size())
-        {
-            commandIndex++;
-        }else {
-            commandIndex = 0;
-        }
-    }
-    polyline.clear();
-    int curveResolution = ofGetStyle().curveResolution;
-    //maybe a better way?
-    ofPath tempPath;
-    int arcResolution = tempPath.getCircleResolution();
-    
-    
-    for(int i=0; i<commandIndex; i++)
-    {
-        switch(commands[i].type)
-        {
-            case ofPath::Command::moveTo:
-                polyline.moveTo(commands[i].to);
-                break;
-            case ofPath::Command::lineTo:
-                polyline.lineTo(commands[i].to);
-                break;
-            case ofPath::Command::curveTo:
-                polyline.curveTo(commands[i].to);
-                //                polyline.curveTo(commands[i].to, curveResolution);
-                break;
-            case ofPath::Command::bezierTo:
-                polyline.bezierTo(commands[i].cp1,commands[i].cp2,commands[i].to);
-                //                polyline.bezierTo(commands[i].cp1,commands[i].cp2,commands[i].to, curveResolution);
-                break;
-            case ofPath::Command::quadBezierTo:
-                //                polyline.quadBezierTo(commands[i].cp1,commands[i].cp2,commands[i].to, curveResolution);
-                polyline.quadBezierTo(commands[i].cp1,commands[i].cp2,commands[i].to);
-                break;
-            case ofPath::Command::arc:
-                //                polyline.arc(commands[i].to,commands[i].radiusX,commands[i].radiusY,commands[i].angleBegin,commands[i].angleEnd, arcResolution);
-                polyline.arc(commands[i].to,commands[i].radiusX,commands[i].radiusY,commands[i].angleBegin,commands[i].angleEnd);
-                
-                break;
-            case ofPath::Command::arcNegative:
-                //                polyline.arcNegative(commands[i].to,commands[i].radiusX,commands[i].radiusY,commands[i].angleBegin,commands[i].angleEnd, arcResolution);
-                polyline.arcNegative(commands[i].to,commands[i].radiusX,commands[i].radiusY,commands[i].angleBegin,commands[i].angleEnd);
-                break;
-            case ofPath::Command::close:
-                polyline.close();
-                //                polylines.push_back(polyline);
-                //                polyline.clear();
-                break;
-        }
-        
-    }
+
     
 }
 
 //--------------------------------------------------------------
+
+
 void ofApp::draw(){
-
+    
+    time = ofGetElapsedTimef();
+    sinTime = sin(time);
+    cosTime = cos(time);
+    mappedMouse = ofMap(mouseX,0,width,-.2,2);
+    //mappedMouse = -.197;
+    
+    //cam.enableOrtho();
+    cam.begin();
+    
     ofPushMatrix();
-    ofSetColor(ofColor::yellow);
-    ofTranslate(20, 20, 0);
-    //    for(int i=0;i<polylines.size();i++){
-    //        polylines[i].draw();
-    //    }
+    ofRotateX(180);
     
-    polyline.draw();
-    ofPopMatrix();
-    
-}
-//--------------------------------------------------------------
-
-void ofApp::drawCircle(float x, float y, float z,  float radius){
-    vector<ofPoint> & circleCache = circlePolyline.getVertices();
-    for(int i=0;i<(int)circleCache.size();i++){
-        circlePoints[i].set(radius*circleCache[i].x+x,radius*circleCache[i].y+y,z);
-        if(i==0)
-        {
-            path.moveTo(circlePoints[i]);
+    for (int i = 0; i< points.size(); i++){
+        vector <ofVec2f> wordPoints = points[i];
+        for (int j = 0; j < wordPoints.size(); j++){
+            float tempI = i;
+            float tempJ = j;
+            ofPoint wiggle2D;
             
-        }else
-        {
-            path.lineTo(circlePoints[i]);
+//            ofPoint maxPoint;
+//            maxPoint.set(wordPoints[wordPoints.size()-1]);
+//            ofPoint minPoint;
+//            minPoint.set(wordPoints[0]);
+//            float textWidth = ofDist(minPoint.x, minPoint.y, maxPoint.x, maxPoint.y);
+            
+            wiggle2D.set(5*cos(.5*time-.1*tempJ),5*sin(.5*time-.1*tempJ),10*cos(.5*time-.1*tempJ));
+            
+            ofPoint zWiggle;
+            //zWiggle.set(0,0,10*cos(time-.1*tempJ)+20*sin(.3*time-.03*i));
+            zWiggle.set(0,0,15*cos(ofGetElapsedTimef()-.05*j)+80*sin(.4*ofGetElapsedTimef()-i));
+            ofPoint newPoints;
+            newPoints.set(wordPoints[j]+wiggle2D+zWiggle);
+            
+            
+            ofPushMatrix();
+            ofTranslate(-width/3-60,60);
+            ofTranslate(newPoints);
+            
+
+            ofSetColor(ofMap(sin(time-.1*j),-1,1,100,240),ofMap(sin(time+mappedMouse*j),-1,1,100,240),ofMap(sin(time-mappedMouse*j),-1,1,30,255));
+            ofDrawBox(0,0,.5*zWiggle.z, (10+13*sin(time+.195*j))+10*cos(time-.02*j) );
+            ofPopMatrix();
+            
+
+            
         }
     }
+
+    ofPopMatrix();
+    cam.end();
+
+    
 }
 
-
 //--------------------------------------------------------------
+
 void ofApp::keyPressed(int key){
 
 }

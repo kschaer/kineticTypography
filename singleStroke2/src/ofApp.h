@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxHersheyFont.h"
+
 
 class ofApp : public ofBaseApp{
 
@@ -21,16 +23,25 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-    ofPolyline circlePolyline;
-    void drawCircle(float x, float y, float z,  float radius);
-    vector<ofPoint> circlePoints;
-    ofPath path;
-    //vector<ofPolyline> paths;
-    vector<ofPath::Command> commands;
-    int commandIndex;
-    vector<ofPolyline> polylines;
-    //    ofPolyline polyline;
-    ofPath polyline;
-    int linecount=0;
-		
+    ofxHersheyFont myFont;
+    ofPath myFontPath;
+    ofPath outline;
+    float fontScale;
+    
+    
+    float width;
+    float height;
+    float time;
+    
+    float sinTime;
+    float cosTime;
+    
+    float mappedMouse;
+
+    
+    vector <vector <ofVec2f> > points; //*******
+    string myString;
+    
+    ofEasyCam cam;
+    
 };
